@@ -1,7 +1,6 @@
 package com.example.heroesapp;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.heroesapp.Utills.FullSizeImageDialog;
@@ -25,7 +23,6 @@ import java.util.List;
 public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroesViewHolder> {
     private List<HeroModel> heroesData;
     private Context adapterContext;
-    private int currentLikedHero = -1; // -1 value is a flag for  "no favorite hero"
 
     //To handle the adapter clicks inside the activity
     private final OnItemClickListener listener;
@@ -53,19 +50,20 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroesViewHold
     //To handle the adapter clicks inside the activity
     @Override
     public void onBindViewHolder(@NonNull HeroesViewHolder holder, int position) {
-        holder.bind(heroesData.get(position), listener,position,holder);
+        holder.bind(heroesData.get(position), listener, position, holder);
         holder.heroName.setText(heroesData.get(position).getHeroTitle());
         holder.heroAbilities.setText(heroesData.get(position).getHeroAbilities());
-      //  heroesData.get(position).getIfFavoriteHero();
+        //  heroesData.get(position).getIfFavoriteHero();
         Glide.with(adapterContext).load(heroesData.get(position).getHeroImage()).apply(RequestOptions.circleCropTransform()).into(holder.heroImage);
-      ManageFavoriteHero manageFavoriteHero = new ManageFavoriteHero(adapterContext);
+        ManageFavoriteHero manageFavoriteHero = new ManageFavoriteHero(adapterContext);
 
         //heroesData.get(position).getIfFavoriteHero() && heroesData.get(position).getCurrentPosition() == currentLikedHero
-        if(heroesData.get(position).getHeroTitle().equals(manageFavoriteHero.getSpTitle()) ){ //only color the single favorite hero (if exist)
+        if (heroesData.get(position).getHeroTitle().equals(manageFavoriteHero.getSpTitle())) { //only color the single favorite hero (if exist)
             holder.makeFavoriteBtn.setBackgroundResource(R.drawable.ic_favorite_red_24dp);
-        }else{
-            holder.makeFavoriteBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);}
-        setOnClickListeners(holder,position);
+        } else {
+            holder.makeFavoriteBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+        }
+        imageClickListener(holder, position);
     }
 
 
@@ -96,22 +94,16 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroesViewHold
         //To handle the adapter clicks inside the activity
         void bind(final HeroModel model, final OnItemClickListener listener, final int position, final HeroesViewHolder holder) {
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    selectLikedHero(holder,position);
-                    listener.onItemClick(model,holder,position);
+                @Override
+                public void onClick(View v) {
+                    selectLikedHero(holder, position);
+                    listener.onItemClick(model, holder, position);
                 }
             });
         }
     }
 
-    private void setOnClickListeners(final HeroesViewHolder holder, final int postision) {
-        holder.makeFavoriteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
+    private void imageClickListener(final HeroesViewHolder holder, final int position) {
         holder.heroImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,34 +115,29 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroesViewHold
                 lp.width = WindowManager.LayoutParams.MATCH_PARENT;
                 lp.height = WindowManager.LayoutParams.MATCH_PARENT;
                 window.setAttributes(lp);
-                fullSizeImageDialog.setImageFullSize(heroesData.get(postision).getHeroImage());
+                fullSizeImageDialog.setImageFullSize(heroesData.get(position).getHeroImage());
                 fullSizeImageDialog.show();
-                System.out.println("dialog called");
-                //todo open dialog with the full image + zoom option
             }
         });
     }
 
 
-    private void selectLikedHero(HeroesViewHolder holder, int postision){
+    private void selectLikedHero(HeroesViewHolder holder, int position) {
 
         ManageFavoriteHero manageFavoriteHero = new ManageFavoriteHero(adapterContext);
-        if(heroesData.get(postision).getIfFavoriteHero()){
+        if (heroesData.get(position).getIfFavoriteHero()) {
             holder.makeFavoriteBtn.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
-            heroesData.get(postision).setFavoriteHero(false);
+            heroesData.get(position).setFavoriteHero(false);
             manageFavoriteHero.saveSp("Choose hero"
-                    ,("no image"));
-        }else{
+                    , ("no image"));
+        } else {
             holder.makeFavoriteBtn.setBackgroundResource(R.drawable.ic_favorite_red_24dp);
-            heroesData.get(postision).setFavoriteHero(true);
-            currentLikedHero = postision;
-            manageFavoriteHero.saveSp(heroesData.get(postision).getHeroTitle()
-                    ,heroesData.get(postision).getHeroImage());
+            heroesData.get(position).setFavoriteHero(true);
+            // -1 value is a flag for  "no favorite hero"
+            // int currentLikedHero = position;
+            manageFavoriteHero.saveSp(heroesData.get(position).getHeroTitle()
+                    , heroesData.get(position).getHeroImage());
         }
         notifyDataSetChanged();
     }
-
-
-
-
 }

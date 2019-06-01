@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 public class ManageFavoriteHero {
     private SharedPreferences prefs;
 
-    public ManageFavoriteHero(Context context){
+    public ManageFavoriteHero(Context context){ //saves the favorite hero locally
 
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
