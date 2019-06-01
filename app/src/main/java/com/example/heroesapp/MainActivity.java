@@ -3,15 +3,9 @@ package com.example.heroesapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.Toolbar;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -53,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void handleHeroesInfo() {
+    public void handleHeroesInfo() { //download the json
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         final String url = MainActivity.this.getResources().getString(R.string.heroes_json);
         // prepare the Request
@@ -80,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    void creteJson(JSONArray response) throws JSONException{
+    void creteJson(JSONArray response) throws JSONException{//makes json from the response - for the model class
         JSONArray data = new JSONArray();
         JSONObject row;
         List<HeroModel> heroModels = new ArrayList<>();
@@ -91,14 +85,13 @@ public class MainActivity extends AppCompatActivity {
                     ,row.get("title").toString()
                     ,row.get("abilities").toString()
                     ,checkIfHeroIsLiked(row.get("title").toString())
-                    ,i));
+                    ));
         }
         configRecyclerView(heroModels);
     }
 
     boolean checkIfHeroIsLiked(String title){
         ManageFavoriteHero manageFavoriteHero = new ManageFavoriteHero(MainActivity.this);
-        System.out.println("whyyyyy" +  manageFavoriteHero.getSpTitle().equals(title));
         return (manageFavoriteHero.getSpTitle().equals(title));
     }
 
@@ -112,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(HeroModel hero, HeroAdapter.HeroesViewHolder holder, int position) {
                 Glide.with(MainActivity.this).load(hero.getHeroImage()).into(toolbarImage);
                 collapsingToolbarLayout.setTitle(hero.getHeroTitle());
-
             }
         });
         heroesRecyclerView.setAdapter(heroAdapter);
@@ -122,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         toolbarImage = findViewById(R.id.toolbar_image);
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+
     }
 
     private void loadToolbarUi() { // loads the image of the saved favorite hero (if exist)
