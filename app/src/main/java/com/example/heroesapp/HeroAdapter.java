@@ -57,7 +57,6 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroesViewHold
         Glide.with(adapterContext).load(heroesData.get(position).getHeroImage()).apply(RequestOptions.circleCropTransform()).into(holder.heroImage);
         ManageFavoriteHero manageFavoriteHero = new ManageFavoriteHero(adapterContext);
 
-        //heroesData.get(position).getIfFavoriteHero() && heroesData.get(position).getCurrentPosition() == currentLikedHero
         if (heroesData.get(position).getHeroTitle().equals(manageFavoriteHero.getSpTitle())) { //only color the single favorite hero (if exist)
             holder.makeFavoriteBtn.setBackgroundResource(R.drawable.ic_favorite_red_24dp);
         } else {
@@ -133,8 +132,6 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroesViewHold
         } else {
             holder.makeFavoriteBtn.setBackgroundResource(R.drawable.ic_favorite_red_24dp);
             heroesData.get(position).setFavoriteHero(true);
-            // -1 value is a flag for  "no favorite hero"
-            // int currentLikedHero = position;
             manageFavoriteHero.saveSp(heroesData.get(position).getHeroTitle()
                     , heroesData.get(position).getHeroImage());
         }

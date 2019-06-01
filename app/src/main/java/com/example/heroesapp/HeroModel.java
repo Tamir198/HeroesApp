@@ -26,7 +26,7 @@ public class HeroModel {
     }
 
     String getHeroAbilities() {
-        //heroAbilities is coming as ["ability","ability"] etc... , remove []
+        //heroAbilities are coming as ["ability","ability"] etc... , remove []
         return heroAbilities.substring(1, heroAbilities.length()-1);
     }
 
