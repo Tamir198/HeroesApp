@@ -1,9 +1,12 @@
 package com.example.heroesapp;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.heroesapp.Utills.FullSizeImageDialog;
 import com.example.heroesapp.Utills.ManageFavoriteHero;
 import com.example.heroesapp.Utills.OnItemClickListener;
 
@@ -111,6 +115,17 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.HeroesViewHold
         holder.heroImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FullSizeImageDialog fullSizeImageDialog = new FullSizeImageDialog(adapterContext);
+                Window window = fullSizeImageDialog.getWindow();
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(window.getAttributes());
+                //This makes the dialog take up the full width
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+                window.setAttributes(lp);
+                fullSizeImageDialog.setImageFullSize(heroesData.get(postision).getHeroImage());
+                fullSizeImageDialog.show();
+                System.out.println("dialog called");
                 //todo open dialog with the full image + zoom option
             }
         });
