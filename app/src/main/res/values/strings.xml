@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HeroesApp</string>
+    <string name="choose_hero">Choose your hero</string>
+    <string name="heroes_json">"https://heroapps.co.il/employee-tests/android/androidexam.json"</string>
+</resources>
