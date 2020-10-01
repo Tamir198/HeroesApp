@@ -3,7 +3,7 @@ HeroesApp
 </H1>
 
 
-In case of This is the Json that I have used in the project.
+This is the Json that I have used in the project.
 
 https://pastebin.com/fJNzuJbx
 
